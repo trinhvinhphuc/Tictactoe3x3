@@ -26,7 +26,7 @@ python tictactoe_server.py
 python tictactoe_client.py [server_ipv4_address] [server_port_number]
 ```
 
-6. Replace `[server_ipv4_address]` with the IP address of the server you want to connect to and `[server_port_number]` with the port number of the server (which is always 2009).
+6. Replace `[server_ipv4_address]` with the IP address of the server you want to connect to and `[server_port_number]` with the port number of the server (which is always 1234).
 
 7. The game will start and you can begin playing against your opponent.
 
