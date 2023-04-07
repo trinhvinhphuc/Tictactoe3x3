@@ -68,7 +68,8 @@ class TicTacToeClient:
     def update_board(self, board_str):
         self.board = list(board_str)
         for i, val in enumerate(self.board):
-            self.buttons[i].configure(text=val)
+            if i < 9:
+                self.buttons[i].configure(text=val)
 
     def button_click(self, cell):
         if self.board[cell] != ' ':
