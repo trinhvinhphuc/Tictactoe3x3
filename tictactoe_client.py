@@ -55,6 +55,10 @@ class TicTacToeClient:
                 # messagebox.showinfo("Message", data)
                 self.message_label.config(text=data)
                 break
+            if data.startswith('Tie!'):
+                self.message_label.config(text=data)
+                break
+
             self.update_board(data)
 
         data = self.client_socket.recv(1024).decode()
