@@ -1,5 +1,5 @@
 # Tic Tac Toe Game
-This is a simple Tic Tac Toe game written in Python. It allows two players to play against each other on the same machine using a GUI. The game also includes a client-server architecture, allowing two players to play remotely over a network.
+Tic Tac Toe is a classic two-player game that challenges you to place your symbol in a 3x3 grid to achieve three in a row, either horizontally, vertically, or diagonally. This implementation of the game was written in Python and includes a graphical user interface (GUI) for easy gameplay. The game also supports remote gameplay over a network using socket-based architecture.
 
 ## Requirements
 The following Python modules are required to run the Tic Tac Toe game:
@@ -14,21 +14,28 @@ The following Python modules are required to run the Tic Tac Toe game:
 
 2. Open the command prompt or terminal and navigate to the project directory.
 
-3. To start the server, run the following command:
+3. To start Player 1, run the following command:
 ```
-python tictactoe_server.py
+python player1.py
 ```
-4. The server will automatically get the IP address of the machine and display it on the console.
+4. Player 1 will start and prompt you to enter the IP address and port number of Player 2.
 
-5. To start the client, run the following command:
+5. To start Player 2, run the following command:
 
 ```
-python tictactoe_client.py [server_ipv4_address] [server_port_number]
+python player2.py
 ```
 
-6. Replace `[server_ipv4_address]` with the IP address of the server you want to connect to and `[server_port_number]` with the port number of the server (which is always 1234).
+6. Player 2 will display their IP address and port number on the console. 
 
-7. The game will start and you can begin playing against your opponent.
+7. Once Player 1 has entered the required information, both players will be prompted to enter their names.
+
+8. The game will start and you can begin playing against your opponent.
 
 ## Game Rules
-The game is played on a 3x3 board. The first player to get three of their marks in a row, column, or diagonal wins. If all spaces on the board are filled without either player achieving three in a row, the game is a tie.
+The game follows the standard Tic Tac Toe rules:
+
+1. The game is played on a 3x3 board.
+2. Each player takes turns placing their symbol (either X or O) in an empty cell of the board.
+3. The first player to get three of their symbols in a row, column, or diagonal wins the game.
+4. If all spaces on the board are filled without either player achieving three in a row, the game is a tie.
