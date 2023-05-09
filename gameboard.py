@@ -5,17 +5,12 @@ class BoardClass():
     username = []
     p1name = ""
     p2name = ""
-    # for checking if it is P1 turn:
     movep1 = True
-    mvcnt = 0  # counts num of moves
-    # Number of games played:
+    mvcnt = 0
     gamesPlayed = 0
-    # Number of wins:
     p1win = 0
     p2win = 0
-    # Number of ties:
     numtie = 0
-    # Number of losses:
     p1loss = 0
     p2loss = 0
     spacer = ""
@@ -41,22 +36,21 @@ class BoardClass():
         self.player1 = tk.Label(window, text="Player 1:\n{}".format(p1name), font=("Verdana", "12")).grid(row=1, column=5)
         self.player2 = tk.Label(window, text="Player 2:\n{}".format(p2name), font=("Verdana", "12")).grid(row=1, column=6)
 
-    def updateGamesPlayed(self):  # Keeps track how many games have started
+    def updateGamesPlayed(self):
         self.gamesPlayed = self.gamesPlayed + 1
         return self.gamesPlayed
 
-    def resetGameBoard(self, playerval, fullbuttonlst):  # Clear all the moves from game board
+    def resetGameBoard(self, playerval, fullbuttonlst):
         if playerval == "X":
             for button in fullbuttonlst:
                 if button["state"] == "disabled":
-                    button.config(text="", state="normal")  ##resets all disabled buttons
+                    button.config(text="", state="normal")
         if playerval == "O":
             for button in fullbuttonlst:
                 if button["state"] == "disabled":
                     button.config(text="")
                 if button["state"] == "normal":
-                    button.config(text="", state="disabled")  ##resets all disabled buttons
-        self.mvcnt = 0
+                    button.config(text="", state="disabled")
         self.movep1 = True
 
     def manageTurns(self, p1turn, movecount, playervar, fullbuttonlst):
@@ -89,8 +83,7 @@ class BoardClass():
             if button["text"] == "" and button["state"] == "disabled":
                 button.config(state="normal")
 
-    def updateGameBoard(self, opponentbttnset, fullbuttonlst,
-                        bttnsendlst):  # Updates the game board with the player's move
+    def updateGameBoard(self, opponentbttnset, fullbuttonlst, bttnsendlst):
         for oppbutton in opponentbttnset:
             for button in fullbuttonlst:
                 if (oppbutton == bttnsendlst[fullbuttonlst.index(button)]):
@@ -98,41 +91,35 @@ class BoardClass():
                         button.config(text="X", bg="MistyRose3", fg="MistyRose2", state="disabled")
                     if {"Player2"}.issubset(opponentbttnset) == True:
                         button.config(text="O", bg="MistyRose3", fg="MistyRose2", state="disabled")
-        '''if oppbutton == "1":
-            if {"Player1"}.issubset(opponentbttnset) == True:
-                fullbuttonlst[0].config(text="X", bg="MistyRose3", fg="MistyRose2", state="disabled")
-            if {"Player2"}.issubset(opponentbttnset) == True:
-                fullbuttonlst[0].config(text="O", bg="MistyRose3", fg="MistyRose2", state="disabled")
-'''
 
     def endgame(self, fullbuttonlst):
-        for button in fullbuttonlst:  ##disables all remaining buttons
+        for button in fullbuttonlst:
             if button["state"] == "normal":
                 button.config(state="disabled")
 
-    ### getting stats values here
+
     def isWinner(self, buttonset, winset, fullbuttonlst, pwin, bttnsendnum, button=None):
         if button != None:
             self.index = fullbuttonlst.index(button)
             self.bttnnum = bttnsendnum[self.index]
-            buttonset.add(self.bttnnum)  # making button set to check if there is a win
-        for setToWin in winset:  ##checking if the user button set is in the list of possible win sets
-            if setToWin.issubset(buttonset) == True:  # checks if all possible sets are a subset, and if player won
-                self.endgame(fullbuttonlst)  ##disabled all other buttons on board
+            buttonset.add(self.bttnnum)
+
+        for setToWin in winset:
+            if setToWin.issubset(buttonset) == True:
+                self.endgame(fullbuttonlst)
                 if {"Player2"}.issubset(buttonset) == True:
                     self.p2win = 1
                     self.p1loss = 1
-                    self.movep1 = False  ## the winner who made the move is P2
+                    self.movep1 = False
 
                 elif {"Player1"}.issubset(buttonset) == True:
                     self.p1win = 1
                     self.p2loss = 1
                     self.movep1 = True
                 pwin = True
-        return [pwin, self.bttnnum, self.p1win, self.p1loss, self.p2win,
-                self.p2loss]  ## lets program know if there is a winner after the button is clicked
+        return [pwin, self.bttnnum, self.p1win, self.p1loss, self.p2win, self.p2loss]
 
-    ### getting tie values here
+
     def boardIsFull(self):
         if self.mvcnt == 9:
             self.numtie = self.numtie + 1

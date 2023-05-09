@@ -14,19 +14,18 @@ p2username = ""
 winval = False
 data = ""
 p1move = True
-statsmem = [0, 0, 0, 0, 0]  # [p1win, p1loss, p2win, p2loss, ties]
+statsmem = [0, 0, 0, 0, 0]
 turninfo = []
 tienum = 0
 names = ["", ""]
 numgame = 0
 countmove = 0
 bttnsendinfo = []
-winsets = [{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'},  # all horizontal wins
-           {'1', '4', '7'}, {'2', '5', '8'}, {'3', '6', '9'},  # all vertical wins
-           {'1', '5', '9'}, {'3', '5', '7'}]  # all diagonal wins
+winsets = [{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'},
+           {'1', '4', '7'}, {'2', '5', '8'}, {'3', '6', '9'},
+           {'1', '5', '9'}, {'3', '5', '7'}]
 
 
-########## FOR TKINTER IU ############
 class gameRun(tk.Frame):
     global names, winsets, p1username, numgame, bttnPushed, p1Socket, countmove, tienum, statsmem, turninfo, opponentbttn, button_lst, winval, p1move, player, userbttn_set
     tttr = 0
@@ -60,14 +59,13 @@ class gameRun(tk.Frame):
         data = str(self.iswinoutput[1])
         userbttn_set.add(data)
         print()
-        print("Your Move:", data)  # bttn info will need to be sent to opponent after bttn is pushed
+        print("Your Move:", data)
         p1Socket.send(data.encode('ascii'))
         turninfo = self.tttr.manageTurns(p1move, countmove, player, button_lst)
         countmove = turninfo[1]
         p1move = turninfo[0]
         self.checkgameend()
 
-    ### After playing again, p2 does not display button1 is pressed on p1 interface. problem with communication?
 
     def createquitbttn(self):
         self.quitbutton = tk.Button(self.master, text="  Quit  ", padx=3, font="Verdana",  command=self.windowquit).grid(row=5, column=1, columnspan=3)
@@ -153,7 +151,6 @@ class gameRun(tk.Frame):
         self.createquitbttn()
 
 
-########## CLASS FOR GETTING USERNAME IN NEW WINDOW
 class getName(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
@@ -173,7 +170,6 @@ class getName(tk.Frame):
         p1Socket.send(p2username.encode('ascii'))
 
 
-######## FOR SOCKET CONNECTION #########
 print("------- Welcome Player 2 -------\n")
 GB = gb.BoardClass()
 loop = True
@@ -190,8 +186,6 @@ def createThread(target):
     thread.daemon = True
     thread.start()
 
-
-######### COMMUNICATION AND INTERPRETATION ###########
 def receiveData():
     global opponentbttn, winsets, data, button_lst, numgame, userbttn_set, winval, turninfo, tienum, names, player, countmove, p1move, statsmem, p1username, p2username
     while True:
@@ -200,7 +194,7 @@ def receiveData():
             if data in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
                 print("Opponent Move:", data)
                 opponentbttn.add(data)
-                GB.updateGameBoard(opponentbttn, button_lst, bttnsendinfo)  ## disables buttons pressed by P1
+                GB.updateGameBoard(opponentbttn, button_lst, bttnsendinfo)
                 checker = GB.isWinner(opponentbttn, winsets, button_lst, winval, bttnsendinfo)
                 turninfo = GB.manageTurns(p1move, countmove, player, button_lst)
                 countmove = turninfo[1]
