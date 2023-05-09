@@ -5,28 +5,27 @@ from tkinter import messagebox
 import threading
 
 player = "X"
-opponentbttn = {"Player2"}  # to keep track of opponent wins
+opponentbttn = {"Player2"}
 userbttn_set = {"Player1"}
-bttnPushed = 0  # data to be sent and added to P2 oppponentbttn lst
-button_lst = []  # lst of all buttons to access outside of class
+bttnPushed = 0
+button_lst = []
 winval = False
 p1move = True
 p1username = ""
 p2username = ""
-statsmem = [0, 0, 0, 0, 0]  # [p1win, p1loss, p2win, p2loss, ties]
+statsmem = [0, 0, 0, 0, 0]
 tienum = 0
-turninfo = []  # holder for manageTurns return values
-names = ["", ""]  # lst of usernames
-checker = []  # holder for isWinner return values
+turninfo = []
+names = ["", ""]
+checker = []
 countmove = 0
 data = ""
 bttnsendinfo = []
-winsets = [{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'},  # all horizontal wins
-           {'1', '4', '7'}, {'2', '5', '8'}, {'3', '6', '9'},  # all vertical wins
-           {'1', '5', '9'}, {'3', '5', '7'}]  # all diagonal wins
+winsets = [{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'},
+           {'1', '4', '7'}, {'2', '5', '8'}, {'3', '6', '9'},
+           {'1', '5', '9'}, {'3', '5', '7'}]
 
 
-###################### TKINTER IU ######################
 class gameRun(tk.Frame):
     global names, winsets, data, bttnPushed, p1Socket, countmove, turninfo, opponentbttn, p1move, button_lst, winval, player, userbttn_set, statsmem, tienum
     tttr = 0
@@ -51,7 +50,7 @@ class gameRun(tk.Frame):
         self.spacer2 = tk.Label(self.master, text="  ", font=("Verdana", "9")).grid(row=4, column=1, columnspan=3)
         self.tttr.getusernames(names[0], names[1], self.master)
 
-    def buttonaction(self, button):  ######  Pressing buttons will prompt actions and send info to opponent
+    def buttonaction(self, button):
         global winval, p1move, countmove, bttnPushed, turninfo, names, data
         winval = False
         button.config(text="X", bg="MistyRose3", fg="MistyRose2", state="disabled")
@@ -70,7 +69,7 @@ class gameRun(tk.Frame):
         p1move = turninfo[0]
         self.checkgameend()
 
-    def checkgameend(self):  ## prints stats at the end of a game
+    def checkgameend(self):
         global tienum, countmove, player, winval
         if winval == True:
             self.tttr.endgame(button_lst)
@@ -97,8 +96,7 @@ class gameRun(tk.Frame):
         if self.entryvalue == "n" or self.entryvalue == "N":
             self.windowquit()
 
-    def createbuttons(self):  ###### creating buttons and storing them in a global list to call later
-
+    def createbuttons(self):
         self.button1 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button1.configure(command=lambda: self.buttonaction(self.button1))
         self.button1.grid(row=1, column=1)
@@ -147,8 +145,7 @@ class gameRun(tk.Frame):
         button_lst.append(self.button8)
         bttnsendinfo.append('8')
 
-        self.button9 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3",
-                                 activeforeground="MistyRose2", height=4, width=8)
+        self.button9 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button9.configure(command=lambda: self.buttonaction(self.button9))
         self.button9.grid(row=3, column=3)
         button_lst.append(self.button9)
@@ -156,12 +153,12 @@ class gameRun(tk.Frame):
 
         self.createquitbttn()
 
-    def pressedPlayAgain(self):  #######  action that occurs when typing "y/Y" in play again pop up window
+    def pressedPlayAgain(self):
         global opponentbttn, userbttn_set, winval, p1move, countmove
         global winval, countmove, opponentbttn, userbttn_set, p1Socket, p1move
-        p1Socket.send("Play Again".encode('ascii'))  ### sending info to opponent to prompt their reset
-        self.tttr.resetGameBoard(player, button_lst)  ### resetting all moves
-        #### resetting global variables
+        p1Socket.send("Play Again".encode('ascii'))
+        self.tttr.resetGameBoard(player, button_lst)
+
         opponentbttn = {"Player2"}
         userbttn_set = {"Player1"}
         winval = False
@@ -182,7 +179,6 @@ class gameRun(tk.Frame):
         self.again_popup.wait_window()
 
 
-########## CLASS FOR GETTING USERNAME IN NEW WINDOW ##########
 class getName(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
@@ -202,7 +198,6 @@ class getName(tk.Frame):
         p1Socket.send(p1username.encode('ascii'))
 
 
-############## CLASS FOR PLAY AGAIN DIALOG WINDOW #############
 class playAgain(tk.Toplevel):
     def __init__(self, master):
         tk.Toplevel.__init__(self, master)
@@ -221,7 +216,6 @@ class playAgain(tk.Toplevel):
             self.master.destroy()
 
 
-###################### SOCKET CONNECTION ######################
 print("------- Welcome Player 1 -------\n")
 GB = gb.BoardClass()
 loop = True
@@ -234,23 +228,20 @@ def createThread(target):
     thread.start()
 
 
-##### COMMUNICATION AND INTERPRETATION #####
 def receiveData():  # receiving a single button num pushed from the opponent (1 == "n")
     global opponentbttn, winsets, names, button_lst, winval, player, data, countmove, statsmem, p1move, checker
     while True:
         try:
             data = p1Socket.recv(1024).decode('ascii')
-            if data == "Quit":  ### closing window if opponent quits game
+            if data == "Quit":
                 messagebox.showinfo(title="Information", message="Player 2 has quit.\nThank you for playing.")
                 ttt.destroy()
                 p1Socket.close()
             elif data in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
                 opponentbttn.add(data)
                 print("Opponent Move:", data)
-                GB.updateGameBoard(opponentbttn, button_lst,
-                                   bttnsendinfo)  # using button to disable the button opponent pressed
-                checker = GB.isWinner(opponentbttn, winsets, button_lst, winval,
-                                      bttnsendinfo)  # checking if there is a winner
+                GB.updateGameBoard(opponentbttn, button_lst, bttnsendinfo)
+                checker = GB.isWinner(opponentbttn, winsets, button_lst, winval, bttnsendinfo)  #
                 winval = checker[0]
                 if winval:
                     for index in range(2, 6):
