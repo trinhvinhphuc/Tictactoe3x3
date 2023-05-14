@@ -33,8 +33,8 @@ class BoardClass():
         self.currentmove = 0
 
     def getusernames(self, p1name, p2name, window):
-        self.player1 = tk.Label(window, text="Player 1:\n{}".format(p1name), font=("Verdana", "12")).grid(row=1, column=5)
-        self.player2 = tk.Label(window, text="Player 2:\n{}".format(p2name), font=("Verdana", "12")).grid(row=1, column=6)
+        self.player1 = tk.Label(window, text="Player 1:\n{}".format(p1name), font=("Verdana", "9")).grid(row=1, column=1)
+        self.player2 = tk.Label(window, text="Player 2:\n{}".format(p2name), font=("Verdana", "9")).grid(row=1, column=3)
 
     def updateGamesPlayed(self):
         self.gamesPlayed = self.gamesPlayed + 1
@@ -128,13 +128,13 @@ class BoardClass():
     def printStats(self, playerval, window, lst_names, lst_stats, p1turn):
         if playerval == "X":
             self.p1stat = tk.Label(window, text="Wins: {}\n\nLosses: {}\n\nTies: {}".format(lst_stats[0], lst_stats[1],lst_stats[4]), font=("Verdana", "12"))
-            self.p1stat.grid(row=2, column=5, rowspan=2, columnspan=2)
+            self.p1stat.grid(row=2, column=4, rowspan=2, columnspan=2)
         elif playerval == "O":
             self.p2stat = tk.Label(window, text="Wins: {}\n\nLosses: {}\n\nTies: {}".format(lst_stats[2], lst_stats[3], lst_stats[4]), font=("Verdana", "12"))
-            self.p2stat.grid(row=2, column=5, rowspan=2, columnspan=2)
+            self.p2stat.grid(row=2, column=4, rowspan=2, columnspan=2)
         if p1turn == True:
             self.lastmove = tk.Label(window, text="Last Winning Move By:\n{}".format(lst_names[1]),font=("Verdana", "10"))
         else:
             self.lastmove = tk.Label(window, text="Last Winning Move By:\n{}".format(lst_names[0]), font=("Verdana", "10"))
 
-        self.lastmove.grid(row=4, column=5, columnspan=2)
+        self.lastmove.grid(row=4, column=4, columnspan=2)
