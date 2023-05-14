@@ -42,12 +42,10 @@ class gameRun(tk.Frame):
 
     def canvasSetup(self):
         self.master.title("Tic-Tac-Toe: Player 1")
-        self.master.geometry("430x400+100+100")
+        self.master.geometry("380x360+100+100")
         self.welcome = tk.Label(self.master, text="Tic-Tac-Toe", font=("Verdana", "25")).grid(row=0, column=1, columnspan=3)
         self.spacer1 = tk.Label(self.master, text="  ", font=("Verdana", "20")).grid(row=0, column=0, rowspan=5)
-        self.spacer = tk.Label(self.master, text=" ", font=("Verdana", "30")).grid(row=0, column=4, rowspan=5)
-        self.stattitle = tk.Label(self.master, text="Game Stats", font=("Verdana", "20")).grid(row=0, column=5, columnspan=2)
-        self.spacer2 = tk.Label(self.master, text="  ", font=("Verdana", "9")).grid(row=4, column=1, columnspan=3)
+        self.stattitle = tk.Label(self.master, text="Game Stats", font=("Verdana", "19")).grid(row=1, column=4, columnspan=2)
         self.tttr.getusernames(names[0], names[1], self.master)
 
     def buttonaction(self, button):
@@ -97,57 +95,65 @@ class gameRun(tk.Frame):
             self.windowquit()
 
     def createbuttons(self):
+        # for i in range(3):
+        #     for j in range(3):
+        #         self.btn = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
+        #         self.btn.configure(command=lambda: self.buttonaction(self.btn))
+        #         self.btn.grid(row=i+2, column=j+1)
+        #         button_lst.append(self.btn)
+        #         bttnsendinfo.append('{}'.format(i+j+1))
+
         self.button1 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button1.configure(command=lambda: self.buttonaction(self.button1))
-        self.button1.grid(row=1, column=1)
+        self.button1.grid(row=2, column=1)
         button_lst.append(self.button1)
         bttnsendinfo.append('1')
 
         self.button2 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button2.configure(command=lambda: self.buttonaction(self.button2))
-        self.button2.grid(row=1, column=2)
+        self.button2.grid(row=2, column=2)
         button_lst.append(self.button2)
         bttnsendinfo.append('2')
 
         self.button3 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3",activeforeground="MistyRose2", height=4, width=8)
         self.button3.configure(command=lambda: self.buttonaction(self.button3))
-        self.button3.grid(row=1, column=3)
+        self.button3.grid(row=2, column=3)
         button_lst.append(self.button3)
         bttnsendinfo.append('3')
 
         self.button4 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button4.configure(command=lambda: self.buttonaction(self.button4))
-        self.button4.grid(row=2, column=1)
+        self.button4.grid(row=3, column=1)
         button_lst.append(self.button4)
         bttnsendinfo.append('4')
 
         self.button5 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button5.configure(command=lambda: self.buttonaction(self.button5))
-        self.button5.grid(row=2, column=2)
+        self.button5.grid(row=3, column=2)
         button_lst.append(self.button5)
         bttnsendinfo.append('5')
 
         self.button6 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button6.configure(command=lambda: self.buttonaction(self.button6))
-        self.button6.grid(row=2, column=3)
+        self.button6.grid(row=3, column=3)
         button_lst.append(self.button6)
         bttnsendinfo.append('6')
 
         self.button7 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button7.configure(command=lambda: self.buttonaction(self.button7))
-        self.button7.grid(row=3, column=1)
+        self.button7.grid(row=4, column=1)
         button_lst.append(self.button7)
         bttnsendinfo.append('7')
 
         self.button8 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button8.configure(command=lambda: self.buttonaction(self.button8))
-        self.button8.grid(row=3, column=2)
+        self.button8.grid(row=4, column=2)
         button_lst.append(self.button8)
         bttnsendinfo.append('8')
 
         self.button9 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
         self.button9.configure(command=lambda: self.buttonaction(self.button9))
-        self.button9.grid(row=3, column=3)
+        self.button9.grid(row=4, column=3)
         button_lst.append(self.button9)
         bttnsendinfo.append('9')
 
