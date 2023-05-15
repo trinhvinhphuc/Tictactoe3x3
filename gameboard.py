@@ -13,12 +13,10 @@ class BoardClass():
     numtie = 0
     p1loss = 0
     p2loss = 0
-    spacer = ""
     bttnnum = 0
     currentmove = 0
 
     def __inti__(self):
-        self.spacer = ""
         self.p1name = ""
         self.p2name = ""
         self.gamesPlayed = 0
@@ -125,16 +123,17 @@ class BoardClass():
             self.numtie = self.numtie + 1
         return self.numtie
 
-    def printStats(self, playerval, window, lst_names, lst_stats, p1turn):
+    def printStats(self, playerval, window, lst_names, lst_stats, p1turn, tie):
         if playerval == "X":
-            self.p1stat = tk.Label(window, text="Wins: {}\n\nLosses: {}\n\nTies: {}".format(lst_stats[0], lst_stats[1],lst_stats[4]), font=("Verdana", "12"))
+            self.p1stat = tk.Label(window, text="Wins: {}\n\nLosses: {}\n\nTies: {}".format(lst_stats[0], lst_stats[1], lst_stats[4]), font=("Verdana", "12"))
             self.p1stat.grid(row=2, column=4, rowspan=2, columnspan=2)
         elif playerval == "O":
             self.p2stat = tk.Label(window, text="Wins: {}\n\nLosses: {}\n\nTies: {}".format(lst_stats[2], lst_stats[3], lst_stats[4]), font=("Verdana", "12"))
             self.p2stat.grid(row=2, column=4, rowspan=2, columnspan=2)
-        if p1turn == True:
-            self.lastmove = tk.Label(window, text="Last Winning Move By:\n{}".format(lst_names[1]),font=("Verdana", "10"))
-        else:
-            self.lastmove = tk.Label(window, text="Last Winning Move By:\n{}".format(lst_names[0]), font=("Verdana", "10"))
 
-        self.lastmove.grid(row=4, column=4, columnspan=2)
+        if tie != True:
+            if p1turn == True:
+                self.lastmove = tk.Label(window, text="Last Winning Move By:\n{}".format(lst_names[1]),font=("Verdana", "10"))
+            else:
+                self.lastmove = tk.Label(window, text="Last Winning Move By:\n{}".format(lst_names[0]), font=("Verdana", "10"))
+            self.lastmove.grid(row=4, column=4, columnspan=2)
