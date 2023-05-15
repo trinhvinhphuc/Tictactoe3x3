@@ -42,9 +42,10 @@ class gameRun(tk.Frame):
 
     def canvasSetup(self):
         self.master.title("Tic-Tac-Toe: Player 1")
-        self.master.geometry("380x360+100+100")
+        self.master.geometry("380x370+100+100")
         self.welcome = tk.Label(self.master, text="Tic-Tac-Toe", font=("Verdana", "25")).grid(row=0, column=1, columnspan=3)
         self.spacer1 = tk.Label(self.master, text="  ", font=("Verdana", "20")).grid(row=0, column=0, rowspan=5)
+        self.spacer = tk.Label(self.master, text="  ", font=("Verdana", "10")).grid(row=5, column=0, columnspan=5)
         self.stattitle = tk.Label(self.master, text="Game Stats", font=("Verdana", "19")).grid(row=1, column=4, columnspan=2)
         self.tttr.getusernames(names[0], names[1], self.master)
 
@@ -71,7 +72,7 @@ class gameRun(tk.Frame):
         global tienum, countmove, player, winval
         if winval == True:
             self.tttr.endgame(button_lst)
-            self.tttr.printStats(player, self.master, names, statsmem, p1move)
+            self.tttr.printStats(player, self.master, names, statsmem, p1move, False)
             self.call_popup(self)
             self.interpretuserentry()
             self.numgame = self.tttr.updateGamesPlayed()
@@ -81,7 +82,7 @@ class gameRun(tk.Frame):
             self.tttr.endgame(button_lst)
             tienum = self.tttr.boardIsFull()
             statsmem[4] = tienum
-            self.tttr.printStats(player, self.master, names, statsmem, p1move)
+            self.tttr.printStats(player, self.master, names, statsmem, p1move, True)
             self.call_popup(self)
             self.interpretuserentry()
             self.numgame = self.tttr.updateGamesPlayed()
@@ -173,10 +174,10 @@ class gameRun(tk.Frame):
         self.__init__(self.master)
 
     def createquitbttn(self):
-        self.quitbutton = tk.Button(self.master, text="  Quit  ", padx=3, font="Verdana", command=self.windowquit).grid(row=5, column=1, columnspan=3)
+        self.quitbutton = tk.Button(self.master, text="  Quit  ", padx=3, font="Verdana", command=self.windowquit).grid(row=6, column=1, columnspan=3)
 
     def windowquit(self):
-        p1Socket.send("Fun Times".encode('ascii'))
+        p1Socket.send("End Game".encode('ascii'))
         self.master.destroy()
         p1Socket.close()
 
@@ -189,13 +190,13 @@ class getName(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.bind('<Return>', self.pressed)
-        self.master.title("Register Username: Player 1")
-        self.master.geometry("300x120+100+100")
-        self.ask = tk.Label(self.master, text="Enter Username:", font=("Verdana", "12")).pack()
+        self.master.title("Player 1")
+        self.master.geometry("300x90+100+100")
+        self.ask = tk.Label(self.master, text="Tên người dùng:", font=("Verdana", "12")).pack()
         self.name = tk.Entry(self.master)
         self.name.pack()
         self.okbttn = tk.Button(self.master, text="  OK  ", command=self.pressed).pack()
-        self.info = tk.Label(self.master, text="Window will close and the game will begin\nwhen both players click OK.", font=("Verdana", "9")).pack()
+        self.info = tk.Label(self.master, text="Nhập tên của bạn để bắt đầu trò chơi.", font=("Verdana", "9")).pack()
 
     def pressed(self):
         global p1username
@@ -210,8 +211,8 @@ class playAgain(tk.Toplevel):
         self.transient(master)
         self.master = master
         self.bind('<Return>', self.buttonpressed)
-        self.ask = tk.Label(self, text="Would you like to play again?", font=("Verdana", "10")).pack()
-        self.dir = tk.Label(self, text="Please enter \"y/Y\" or \"n/N\":", font=("Verdana", "10")).pack()
+        self.ask = tk.Label(self, text="Bạn có muốn tái đầu với đối thủ?", font=("Verdana", "10")).pack()
+        self.dir = tk.Label(self, text="Nhập \"y/Y\" or \"n/N\":", font=("Verdana", "10")).pack()
         self.e1 = tk.Entry(self)
         self.e1.pack()
         self.okbttn = tk.Button(self, text="  OK  ", command=self.buttonpressed).pack()
@@ -240,7 +241,7 @@ def receiveData():  # receiving a single button num pushed from the opponent (1 
         try:
             data = p1Socket.recv(1024).decode('ascii')
             if data == "Quit":
-                messagebox.showinfo(title="Information", message="Player 2 has quit.\nThank you for playing.")
+                messagebox.showinfo(title="Information", message="Người chơi 2 đã rời.")
                 ttt.destroy()
                 p1Socket.close()
             elif data in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
@@ -257,11 +258,11 @@ def receiveData():  # receiving a single button num pushed from the opponent (1 
                 p1move = turninfo[0]
                 tictactoe.checkgameend()
             else:
-                messagebox.showinfo(title="Error", message="Player 2 has lost connection. Closing window.")
+                messagebox.showinfo(title="Error", message="Người chơi 2 đã mất kết nối.")
                 ttt.destroy()
 
         except:
-            messagebox.showinfo(title="Error", message="Player 2 has lost connection. Closing window.")
+            messagebox.showinfo(title="Error", message="Người chơi 2 đã mất kết nối")
             ttt.destroy()
             break
 
@@ -271,8 +272,8 @@ if __name__ == '__main__':
         validresponse = ["y", "Y", "n", "N"]
         p1Socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            p2IP = input("Please provide the IP address of Player 2: ")
-            p2port = int(input("Please provide the port number of Player 2: "))
+            p2IP = input("Nhập địa chỉ IP: ")
+            p2port = int(input("Cổng: "))
             p1Socket.connect((p2IP, p2port))
             print("\nWaiting to Connection...")
             namewindow = tk.Tk()
@@ -289,17 +290,17 @@ if __name__ == '__main__':
 
         except:
             print()
-            userresponse = input("Error has occurred.\nWould you like to try again?\n")
+            userresponse = input("Xảy ra lỗi.\nYêu cầu kết nối lại?\n")
             if userresponse == "y" or userresponse == "Y":
                 loop = True
             elif userresponse == "n" or userresponse == "N":
                 p1Socket.close()
-                print("Connection attempt terminated.")
+                print("Đóng kết nối.")
                 loop = False
             else:
                 while userresponse not in validresponse:
-                    userresponse = input("Please enter \"y/Y\" or \"n/N\": ")
+                    userresponse = input("Nhập \"y/Y\" or \"n/N\": ")
                 if userresponse == "n" or userresponse == "N":
                     p1Socket.close()
-                    print("Connection atttempt terminated")
+                    print("Đóng kết nối.")
                     loop = False

@@ -40,9 +40,10 @@ class gameRun(tk.Frame):
 
     def canvasSetup(self):
         self.master.title("Tic-Tac-Toe: Player 2")
-        self.master.geometry("380x360+800+100")
+        self.master.geometry("380x370+800+100")
         self.welcome = tk.Label(self.master, text="Tic-Tac-Toe", font=("Verdana", "25")).grid(row=0, column=1, columnspan=3)
         self.spacer1 = tk.Label(self.master, text="  ", font=("Verdana", "20")).grid(row=0, column=0, rowspan=5)
+        self.spacer = tk.Label(self.master, text="  ", font=("Verdana", "10")).grid(row=5, column=0, columnspan=5)
         self.stattitle = tk.Label(self.master, text="Game Stats", font=("Verdana", "19")).grid(row=1, column=4, columnspan=2)
         self.tttr.getusernames(names[0], names[1], self.master)
 
@@ -66,25 +67,27 @@ class gameRun(tk.Frame):
 
 
     def createquitbttn(self):
-        self.quitbutton = tk.Button(self.master, text="  Quit  ", padx=3, font="Verdana",  command=self.windowquit).grid(row=5, column=1, columnspan=3)
+        self.quitbutton = tk.Button(self.master, text="  Quit  ", padx=3, font="Verdana",  command=self.windowquit).grid(row=6, column=1, columnspan=3)
 
     def windowquit(self):
-        p1Socket.send("Quit".encode('ascii'))
+        p1Socket.send("End Game".encode('ascii'))
         self.master.destroy()
         p1Socket.close()
 
     def checkgameend(self):
         global tienum, countmove, player, p1move, numgame
+        tie = False
         if winval == True:
-            self.tttr.printStats(player, self.master, names, statsmem, p1move)
+            self.tttr.printStats(player, self.master, names, statsmem, p1move, tie)
             numgame = self.tttr.updateGamesPlayed()
             print()
             print("------ End of Game ------")
             print()
         elif winval == False and countmove == 9:
             tienum = self.tttr.boardIsFull()
+            tie = True
             statsmem[4] = tienum
-            self.tttr.printStats(player, self.master, names, statsmem, p1move)
+            self.tttr.printStats(player, self.master, names, statsmem, p1move, tie)
             numgame = self.tttr.updateGamesPlayed()
             print()
             print("------ End of Game ------")
@@ -100,55 +103,55 @@ class gameRun(tk.Frame):
         #         bttnsendinfo.append('{}'.format(i+j+1))
 
         self.button1 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
-        self.button1.configure(command=lambda: self.buttonaction(self.button1))
+        self.button1.configure(state="disabled", command=lambda: self.buttonaction(self.button1))
         self.button1.grid(row=2, column=1)
         button_lst.append(self.button1)
         bttnsendinfo.append('1')
 
         self.button2 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
-        self.button2.configure(command=lambda: self.buttonaction(self.button2))
+        self.button2.configure(state="disabled", command=lambda: self.buttonaction(self.button2))
         self.button2.grid(row=2, column=2)
         button_lst.append(self.button2)
         bttnsendinfo.append('2')
 
         self.button3 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
-        self.button3.configure(command=lambda: self.buttonaction(self.button3))
+        self.button3.configure(state="disabled", command=lambda: self.buttonaction(self.button3))
         self.button3.grid(row=2, column=3)
         button_lst.append(self.button3)
         bttnsendinfo.append('3')
 
         self.button4 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
-        self.button4.configure(command=lambda: self.buttonaction(self.button4))
+        self.button4.configure(state="disabled", command=lambda: self.buttonaction(self.button4))
         self.button4.grid(row=3, column=1)
         button_lst.append(self.button4)
         bttnsendinfo.append('4')
 
         self.button5 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
-        self.button5.configure(command=lambda: self.buttonaction(self.button5))
+        self.button5.configure(state="disabled", command=lambda: self.buttonaction(self.button5))
         self.button5.grid(row=3, column=2)
         button_lst.append(self.button5)
         bttnsendinfo.append('5')
 
         self.button6 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
-        self.button6.configure(command=lambda: self.buttonaction(self.button6))
+        self.button6.configure(state="disabled", command=lambda: self.buttonaction(self.button6))
         self.button6.grid(row=3, column=3)
         button_lst.append(self.button6)
         bttnsendinfo.append('6')
 
         self.button7 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
-        self.button7.configure(command=lambda: self.buttonaction(self.button7))
+        self.button7.configure(state="disabled", command=lambda: self.buttonaction(self.button7))
         self.button7.grid(row=4, column=1)
         button_lst.append(self.button7)
         bttnsendinfo.append('7')
 
         self.button8 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
-        self.button8.configure(command=lambda: self.buttonaction(self.button8))
+        self.button8.configure(state="disabled", command=lambda: self.buttonaction(self.button8))
         self.button8.grid(row=4, column=2)
         button_lst.append(self.button8)
         bttnsendinfo.append('8')
 
         self.button9 = tk.Button(self.master, text="", bg="gray80", fg="white", activebackground="MistyRose3", activeforeground="MistyRose2", height=4, width=8)
-        self.button9.configure(command=lambda: self.buttonaction(self.button9))
+        self.button9.configure(state="disabled", command=lambda: self.buttonaction(self.button9))
         self.button9.grid(row=4, column=3)
         button_lst.append(self.button9)
         bttnsendinfo.append('9')
@@ -160,13 +163,13 @@ class getName(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)
         self.bind('<Return>', self.pressed)
-        self.master.title("Register Username: Player 2")
-        self.master.geometry("300x120+800+100")
-        self.ask = tk.Label(self.master, text="Enter Username:", font=("Verdana", "12")).pack()
+        self.master.title("Player 2")
+        self.master.geometry("300x90+100+100")
+        self.ask = tk.Label(self.master, text="Tên người dùng:", font=("Verdana", "12")).pack()
         self.name = tk.Entry(self.master)
         self.name.pack()
         self.okbttn = tk.Button(self.master, text="  OK  ", command=self.pressed).pack()
-        self.info = tk.Label(self.master, text="Window will close and the game will begin\nwhen both players click OK.", font=("Verdana", "9")).pack()
+        self.info = tk.Label(self.master, text="Nhập tên của bạn để bắt đầu trò chơi.", font=("Verdana", "9")).pack()
 
     def pressed(self):
         global p2username
@@ -182,8 +185,8 @@ hostname = socket.gethostname()
 hostIPAddress = socket.gethostbyname(hostname)
 port = 8801
 p1Socket, p1Address = None, None
-print("IP Address: {}".format(hostIPAddress))
-print("Port Number: {}\n".format(port))
+print("Địa chỉ IP: {}".format(hostIPAddress))
+print("Cổng {}\n".format(port))
 
 
 def createThread(target):
@@ -208,7 +211,7 @@ def receiveData():
                 if winval:
                     for index in range(2, 6):
                         statsmem[index - 2] = statsmem[index - 2] + checker[index]
-                    GB.printStats(player, ttt, names, statsmem, p1move)
+                    GB.printStats(player, ttt, names, statsmem, p1move, False)
                     numgame = GB.updateGamesPlayed()
                     print()
                     print("------ End of Game ------")
@@ -216,15 +219,15 @@ def receiveData():
                 elif winval == False and countmove == 9:
                     tienum = GB.boardIsFull()
                     statsmem[4] = tienum
-                    GB.printStats(player, ttt, names, statsmem, p1move)
+                    GB.printStats(player, ttt, names, statsmem, p1move, True)
                     numgame = GB.updateGamesPlayed()
                     print()
                     print("------ End of Game ------")
                     print()
 
             elif data == "Play Again":
-                GB.printStats(player, ttt, names, statsmem, p1move)
-                messagebox.showinfo(title="Message from Player 1", message="Player 1 would like to play again.")
+                # GB.printStats(player, ttt, names, statsmem, p1move)
+                messagebox.showinfo(title="Message from Player 1", message="Người chơi 1 yêu cầu tái đấu.")
                 GB.resetGameBoard(player, button_lst)
                 opponentbttn = {'Player1'}
                 userbttn_set = {"Player2"}
@@ -233,24 +236,24 @@ def receiveData():
                 p1move = True
                 tictactoe.__init__(ttt)
 
-            elif data == "Fun Times":
-                GB.printStats(player, ttt, names, statsmem, p1move)
-                messagebox.showinfo(title="Message from Player 1", message="Fun Times.\nPlayer 1 has quit the game.")
+            elif data == "End Game":
+                # GB.printStats(player, ttt, names, statsmem, p1move)
+                messagebox.showinfo(title="Message from Player 1", message="Kết thúc trận đấu.\nNgười chơi 1 đã rời.")
                 ttt.destroy()
                 p1Socket.close()
 
             elif data == "Quit":
-                messagebox.showinfo(title="Information", message="Player 1 has quit.\nThank you for playing.")
+                messagebox.showinfo(title="Information", message="Người chơi 1 đã rời.")
                 ttt.destroy()
                 p1Socket.close()
 
             else:
-                messagebox.showinfo(title="Error", message="Player 1 has lost connection. Closing window.")
+                messagebox.showinfo(title="Error", message="Người chơi 1 đã mất kết nối.")
                 ttt.destroy()
                 p1Socket.close()
 
         except Exception as err:
-            messagebox.showinfo(title="Error", message="Player 1 has lost connection. Closing window.")
+            messagebox.showinfo(title="Error", message="Người chơi 1 đã mất kết nối.")
             break
 
 
